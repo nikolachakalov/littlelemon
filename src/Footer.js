@@ -1,10 +1,43 @@
 //import './App.css';
 
+
+
+
 function Footer() {
   return (
     <>
       <footer>
-       {children}
+        <section>
+          Site links
+       <ul>
+        <li>
+          Home
+        </li>
+        <li>
+          About
+        </li>
+        <li>
+          Online reservation
+        </li>
+        <li>
+          Address
+        </li>
+        </ul>
+        </section>
+        <section>
+        Social Media
+        <ul>
+        <li>
+          Facebook
+        </li>
+        <li>
+          Instagram
+        </li>
+        <li>
+          LinkedIn
+        </li>
+       </ul>
+       </section>
       </footer>
     </>
   );

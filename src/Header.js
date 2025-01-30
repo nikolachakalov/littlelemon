@@ -1,9 +1,9 @@
 //import './App.css';
 
-function Nav(props) {
+function Header(props) {
   return (
     <>
-      <header>
+        <header>
         <img src={props.logo_link} alt=""></img>
         <nav>
           <ul>
@@ -26,4 +26,4 @@ function Nav(props) {
   );
 }
 
-export default Nav;
+export default Header;
