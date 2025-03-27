@@ -1,38 +1,48 @@
-const Hero = (props) => {
-  return (
-    <>
-      <main>
-        <div style={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          height:"300px"
-        }}>
-          <div style={{ flex: "1", display: "flex",
-              alignItems: "center", padding:"30px" }}>
-            
-            <article style={{
-              display: "flex",
-              width: "100%",
-              height: "inherit",
-              flexDirection: "column",
-              alignItems:"flex-start",
-            }}>
-              <h1>{props.title}</h1>
-              <h3>{props.subtitle}</h3>
-              <p>{props.body}</p>
-              <button>{props.buttonLabel}</button>
-            </article>
-          </div>
-          <div style={{ flex: "1", display: "flex", overflow: "hidden", height: "inherit", paddingTop:"30px" }}>
-            <img src={props.imageURL} 
-                 alt='' 
-                 style={{ width: "100%", height:"inherit", objectFit: "cover" }}/>
-          </div>
-        </div>
-      </main>
-    </>
-  );
-}
+
+import React from 'react';
+import { Button, Heading, Paragraph, Grid, Box, Image } from 'grommet';
+import {Cafeteria} from 'grommet-icons';
+
+export const Hero = (props) => (
+  <>
+      <Heading>{props.title}</Heading>
+      <Grid
+        columns={{count: props.image ? 2 : 1, size: "auto"}}
+        height="auto"
+        gap="large"
+        align='center'
+        border={props.border}>
+
+        
+
+          <Box responsive="true">
+
+          <Paragraph 
+            fill="true" 
+            size={props.size}>
+            {props.body}
+          </Paragraph>
+
+          {props.button &&
+          <Button 
+            icon={<Cafeteria size="medium" />} 
+            pad={{horizontal: "medium", vertical:"small"}} 
+            primary label="Reserve a table" 
+            alignSelf='start'/>
+          }
+
+          </Box>
+
+          {props.image &&
+            <Box fill="horizontal" responsive="true" height="300px">
+              <Image 
+                fit="cover" 
+                src={props.url}/>
+            </Box>
+            }
+
+      </Grid>
+      </>
+);
 
 export default Hero;
