@@ -13,8 +13,6 @@ export const Hero = (props) => (
         align='center'
         border={props.border}>
 
-        
-
           <Box responsive="true">
 
           <Paragraph 
@@ -28,7 +26,8 @@ export const Hero = (props) => (
             icon={<Cafeteria size="medium" />} 
             pad={{horizontal: "medium", vertical:"small"}} 
             primary label="Reserve a table" 
-            alignSelf='start'/>
+            alignSelf='start'
+            href={props.link}/>
           }
 
           </Box>

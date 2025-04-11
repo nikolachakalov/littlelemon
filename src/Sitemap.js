@@ -1,19 +1,17 @@
 import React from 'react';
-import { Anchor, Box, Footer, Main, Text } from 'grommet';
-import {Cafeteria} from 'grommet-icons';
+import { Anchor, Box, Footer, Text } from 'grommet';
 import {ReactComponent as Logo} from './assets/Logo.svg';
 
 
 
 const data = [
-  ["Navigation", "Home", "About", "Reserve a table", "Menu"],
-  ["Contact", "West 85 Str", "+1 555 567 124", "littlelemon@gmail.com"],
-  ["Social Media Links", "Facebook", "Instagram", "Yelp"]
+  ["Navigation", ["Home", "/"], ["About", "/"], ["Reserve a table","/reservations"], ["Menu", "/"]],
+  ["Social Media Links", ["Facebook", "/"], ["Instagram", "/"], ["Yelp", "/"]]
 ];
 
 
 const FooterAnchor = ({ ...rest }) => (
-    <Anchor href="/" size="small" color="#788E76" {...rest} />
+    <Anchor size="small" color="#788E76" {...rest} />
   );
 
 
@@ -26,7 +24,7 @@ const FooterContent = () => (
           </Text>
           <Box>
             {[1, 2, 3].map((i) => (
-              <FooterAnchor key={item[i]}>{item[i]}</FooterAnchor>
+              <FooterAnchor href={item[i][1]} key={item[i]}>{item[i][0]}</FooterAnchor>
             ))}
           </Box>
         </Box>
