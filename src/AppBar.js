@@ -6,7 +6,8 @@ import {ReactComponent as Logo} from './assets/Logo.svg';
 const data = [["Home", "/"], ["Profile", "/"], ["About","/"], ["Menu", "/"], ["Reservations", "/reservations"], ["Order online", "/"], ["Login", "/"]];
 
 const AppBar = (props) => (
-  <Header background="brand" pad="medium" className="header-bar" elevation='small' >
+ 
+  <Header background="brand" pad="medium" className="header-bar" elevation='medium' sticky='scrollup'>
   <Logo />
   <Avatar src={props.icon} />
   <Nav direction="row">
