@@ -1,6 +1,7 @@
 
 import AppBar from "./AppBar.js";
 import BookingPage from "./BookingPage.js";
+import BookingConfirmed from "./BookingConfirmed.js"
 import Home from "./Home.js";
 import { Grommet } from 'grommet';
 import "@fontsource/inter/300.css"; // Defaults to weight 400
@@ -55,6 +56,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/reservations" element={<BookingPage />} />
+            <Route path="/booking-successful" element={<BookingConfirmed />} />
           </Routes>
     </Grommet>
   );

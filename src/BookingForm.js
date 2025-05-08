@@ -1,6 +1,7 @@
 import './App.css';
 
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import {
     Box,
@@ -11,7 +12,10 @@ import {
     TextArea,
     DateInput,
     Select,
-    RadioButtonGroup
+    RadioButtonGroup,
+    Main,
+    Paragraph,
+    Heading
 } from 'grommet';
 
 
@@ -38,6 +42,9 @@ const fetchAPI = (date) => {
     return result;
 };
 
+const submitAPI = function(formData) {
+    return true;
+};
 
  const validateEmail = (value) => {
     const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -52,11 +59,13 @@ const ACTION = {
     UPDATE_GUEST: "UPDATE_GUEST",
     UPDATE_OCCASION: "UPDATE_OCCASION",
     UPDATE_COMMENTS: "UPDATE_COMMENTS",
+    UPDATE_NAME: "UPDATE_NAME",
     RESET_FORM:"RESET_FORM",
     SUBMIT_FORM: "SUBMIT_FORM"
 }
 
 const initialState = {
+    name: { value: "", isTouched: false },
     date: { value: "", isTouched: false },
     time: { value: "", isTouched: false },
     email: { value: "", isTouched: false, isValid: false },
@@ -68,10 +77,20 @@ const initialState = {
     {label: 'Anniversary', value: 'Anniversary'}], value: "", isTouched: false},
     availableTimes: [],
     comments: {value: ""} ,
+    bookingSuccessful: false
 };
+
+
 
 const reducer = (state, action) => {
     switch (action.type) {
+
+        case ACTION.UPDATE_NAME:
+            return {
+                ...state,
+                [action.fieldName]: {...state[action.fieldName], value: action.payload},
+            };
+
 
         case ACTION.UPDATE_DATE:
             return {
@@ -134,9 +153,11 @@ const reducer = (state, action) => {
                 return initialState;
 
             case ACTION.SUBMIT_FORM:
-
-              console.log(action.payload);
-              return initialState;
+              console.log("SUBMIT", action.payload);
+              return {
+                ...state,
+                bookingSuccessful: submitAPI(action.payload),
+            }
 
         default:
             return state;
@@ -144,65 +165,92 @@ const reducer = (state, action) => {
 };
 
 
-function App() {
+
+function BookingForm() {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
+        const navigate = useNavigate();
+        useEffect(() => {
+            if (state.bookingSuccessful) {
+                navigate("/booking-successful");
+            }
+            }, [state.bookingSuccessful]);
+
     const getIsFormValid = () => {
+            console.log(
+        //     "state.name:", state.name,
+        //     "state.email:", state.email,
+        //     "state.email.isValid:", state.email.isValid,
+        //     "state.date:", state.date,
+        //     "state.time:", state.time,
+        //     "state.occasions:", state.occasions,
+        //     "state.guests:", state.guests)
+            )
+
         return (
-          state &&
-          state.name &&
-          state.name.value &&
-          state.email &&
-          state.email.isValid &&
-          state.date &&
-          state.date.value &&
-          state.time &&
-          state.time.value &&
-          state.occasion &&
-          state.occasion.value
+            !!state &&
+            !!state.name &&
+            !!state.name.value &&
+            !!state.email &&
+            !!state.email.value &&
+            !!state.email.isValid &&
+            !!state.date &&
+            !!state.date.value &&
+            !!state.time &&
+            !!state.time.value &&
+            !!state.occasions &&
+            !!state.occasions.value &&
+            !!state.guests &&
+            !!state.guests.value
         );
+
       };
 
-      useEffect(() => {
-        console.log(state, "validity :", getIsFormValid())
-      }, [state]);
+
+
 
     const handleUpdateGuests = (event) => {
-        console.log("Guest event:", event.type);
+        // console.log("Guest event:", event);
         dispatch({ type: ACTION.UPDATE_GUEST, fieldName: event.target.name, payload: {value: event.target.value, type: event.type} });
 
     };
 
     const handleUpdateComments = (event) => {
-        console.log("Comment event:", event);
+        // console.log("Comment event:", event);
+        dispatch({ type: ACTION.UPDATE_COMMENTS, fieldName: event.target.name, payload: event.target.value });
+
+    };
+
+    const handleUpdateName = (event) => {
+        console.log("Name event:", event.target.value);
         dispatch({ type: ACTION.UPDATE_COMMENTS, fieldName: event.target.name, payload: event.target.value });
 
     };
 
     const handleUpdateOccasions = (event) => {
-        console.log("Occasion event:", event);
+        // console.log("Occasion event:", event);
         dispatch({ type: ACTION.UPDATE_OCCASION, fieldName: event.target.name, payload: {value: event.value, type: event.type} });
 
     };
 
     const handleUpdateEmail = (event) => {
-        console.log("Email event:", event.type);
+        // console.log("Email event:", event.type);
         dispatch({ type: ACTION.UPDATE_EMAIL, fieldName: event.target.name, payload: {value: event.target.value, type: event.type} });
     };
 
     const handleUpdateDate = (event) => {
-        console.log("Date event:", event.type);
+        console.log("Date event:", event);
         dispatch({ type: ACTION.UPDATE_DATE, fieldName: 'date', payload: event.value });
     };
 
     const handleTimeChange = (event) => {
-        console.log("Time event:", event.type);
+        console.log("Time event:", event);
         dispatch({ type: ACTION.UPDATE_TIME, fieldName: event.target.name, payload: event.value });
     };
 
     const handleResetForm = () => {
-        console.log("Reset");
+        // console.log("Reset");
         dispatch({ type: ACTION.RESET_FORM });
     };
 
@@ -211,7 +259,14 @@ function App() {
   };
 
 
-    return (
+return (
+
+    <Box align="center" >
+
+        <Main>
+        <Heading>Reserve a table</Heading>
+        <Paragraph>Please fill out this form to book your table online</Paragraph>
+        </Main>
 
     <Box align="center" justify="center" pad="large" >
       <Box width="medium" >
@@ -220,8 +275,20 @@ function App() {
           onReset={handleResetForm}
           onSubmit={handleSubmitForm}
         >
+        <FormField label="Name" htmlFor="name" name="name">
+            <MaskedInput
+            placeholder="Please enter your name"
+            required
+            id="name"
+            name="name"
+            value={state.name.value}
+            onChange={handleUpdateName}
+            />
+          </FormField>
+
             <FormField name="date" label="Date" required error={state.date.isTouched && !state.date.value ? "Please select a date" : null}>
                 <DateInput
+                    data-testid="date-select"
                     onChange={handleUpdateDate}
                     value={state.date.value}
                     name="date"
@@ -236,6 +303,7 @@ function App() {
                 error={state.time.isTouched && !state.time.value ? "Please select a time" : null}
             >
                 <Select
+                    data-testid="time-select"
                     disabled={!state.date.value}
                     onChange={handleTimeChange}
                     name="time"
@@ -263,8 +331,9 @@ function App() {
             </FormField>
 
 
-          <FormField label="Guests" name="guestSelect" required error={!state.guests.value && state.guests.isTouched ? "Please select guests" : null}>
+          <FormField label="Guests" name="guestSelect" error={!state.guests.value && state.guests.isTouched ? "Please select guests" : null}>
           <Select
+            required
             value={state.guests.value}
             onChange={handleUpdateGuests}
             onBlur={handleUpdateGuests}
@@ -300,13 +369,14 @@ function App() {
           <Box direction="row" justify="between" margin={{ top: 'medium' }} >
             <Button label="Cancel" href="/" />
             <Button type="reset" label="Reset"  />
-            <Button disabled={!getIsFormValid()} type="submit" label="Update" />
+            <Button data-testid="submit-button" disabled={!getIsFormValid()} type="submit" label="Submit" />
           </Box>
 
         </Form>
         </Box>
         </Box>
+        </Box>
       );
-}
+    }
 
-export default App;
+    export default BookingForm;
