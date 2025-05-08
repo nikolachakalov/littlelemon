@@ -170,23 +170,14 @@ function BookingForm() {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
-        const navigate = useNavigate();
-        useEffect(() => {
-            if (state.bookingSuccessful) {
-                navigate("/booking-successful");
-            }
-            }, [state.bookingSuccessful]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (state.bookingSuccessful) {
+            navigate("/booking-successful");
+        }
+        }, [state.bookingSuccessful]);
 
     const getIsFormValid = () => {
-            console.log(
-        //     "state.name:", state.name,
-        //     "state.email:", state.email,
-        //     "state.email.isValid:", state.email.isValid,
-        //     "state.date:", state.date,
-        //     "state.time:", state.time,
-        //     "state.occasions:", state.occasions,
-        //     "state.guests:", state.guests)
-            )
 
         return (
             !!state &&
